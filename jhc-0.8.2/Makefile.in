@@ -575,7 +575,7 @@ GHCLANG = -XTypeFamilies -XViewPatterns -XUndecidableInstances -XOverlappingInst
          -XFlexibleContexts -XConstrainedClassMethods -XFunctionalDependencies -XMagicHash \
          -XPolymorphicComponents -XExistentialQuantification -XUnicodeSyntax -XPostfixOperators \
          -XPatternGuards -XLiberalTypeSynonyms -XRankNTypes -XTypeOperators \
-         -XEmptyDataDecls -XKindSignatures -XBangPatterns
+         -XEmptyDataDecls -XKindSignatures -XBangPatterns -XDeriveGeneric
 
 GHCOPTS = $(HSOPTS) -O @GHCFLAGS@ $(GHCDEBUGOPTS) $(GHCINC) $(GHCLANG)
 LIB_OPTIONS = $(RTSOPTS) $(JHC_TEST)  -L- -L.

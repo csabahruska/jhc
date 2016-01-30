@@ -62,7 +62,7 @@ GHCLANG= -XTypeFamilies -XViewPatterns -XUndecidableInstances -XOverlappingInsta
          -XFlexibleContexts -XConstrainedClassMethods -XFunctionalDependencies -XMagicHash \
          -XPolymorphicComponents -XExistentialQuantification -XUnicodeSyntax -XPostfixOperators \
          -XPatternGuards -XLiberalTypeSynonyms -XRankNTypes -XTypeOperators \
-         -XEmptyDataDecls -XKindSignatures -XBangPatterns
+         -XEmptyDataDecls -XKindSignatures -XBangPatterns -XDeriveGeneric
 
 GHCOPTS= $(HSOPTS) -O @GHCFLAGS@ $(GHCDEBUGOPTS) $(GHCINC) $(GHCLANG)
 
