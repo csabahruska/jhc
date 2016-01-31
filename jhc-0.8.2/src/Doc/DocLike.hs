@@ -1,5 +1,7 @@
-{-# LANGUAGE CPP,UndecidableInstances,OverlappingInstances #-}
+{-# LANGUAGE CPP,UndecidableInstances,OverlappingInstances, NoImplicitPrelude #-}
 module Doc.DocLike where
+
+import Prelude hiding ((<$>))
 
 #include "hs_src_config.h"
 
@@ -11,9 +13,12 @@ import Data.Monoid(Monoid(..))
 import Control.Monad.Reader()
 import qualified Text.PrettyPrint.HughesPJ as P
 
-infixr 5 <$> -- ,<//>,<$>,<$$>
+infixr 5 <$>,<$$$> -- ,<//>,<$>,<$$>
 infixr 6 <>
 infixr 6 <+>
+
+(<$$$>) :: DocLike a => a -> a -> a
+(<$$$>) = (<$>)
 
 class TextLike a where
     empty :: a

@@ -62,8 +62,8 @@ isOneLine MkCont {} = False
 isOneLine _ = True
 
 {-# NOINLINE prettyExp #-}
-prettyExp vl (e1 :>>= v :-> e2) | isComplex e1 = align $ ((pVar' v) <> (prettyExp empty e1)) <$> prettyExp vl e2
-prettyExp vl (e1 :>>= v :-> e2) = align (prettyExp (pVar v) e1 <$> prettyExp vl e2)
+prettyExp vl (e1 :>>= v :-> e2) | isComplex e1 = align $ ((pVar' v) <> (prettyExp empty e1)) <$$$> prettyExp vl e2
+prettyExp vl (e1 :>>= v :-> e2) = align (prettyExp (pVar v) e1 <$$$> prettyExp vl e2)
 prettyExp vl (Return []) = vl <> keyword "return" <+> text "()"
 prettyExp vl (Return [v]) = vl <> keyword "return" <+> prettyVal v
 prettyExp vl (Return vs) = vl <> keyword "return" <+> tupled (map prettyVal vs)
@@ -79,7 +79,7 @@ prettyExp vl Prim { expPrimitive = (Op (Op.BinOp bo _ _) _), expArgs = [x,y] } |
 prettyExp vl Prim { expPrimitive = (Op (Op.BinOp bo _ _) _), expArgs = [x,y] } = vl <> prettyVal x <+> char '`' <> tshow bo <> char '`' <+> prettyVal y
 prettyExp vl Prim { expPrimitive = (Peek t), expArgs = [v] }  = vl <> prim (show t) <> char '[' <> prettyVal v <> char ']'
 prettyExp vl Prim { expPrimitive = ap, expArgs = vs } = vl <> prim (pprint ap) <+> hsep (map prettyVal vs)
-prettyExp vl (GcRoots vs b) = vl <> keyword "withRoots" <> tupled (map prettyVal vs) <$> indent 2 (prettyExp empty b)
+prettyExp vl (GcRoots vs b) = vl <> keyword "withRoots" <> tupled (map prettyVal vs) <$$$> indent 2 (prettyExp empty b)
 prettyExp vl (BaseOp Overwrite [x,y]) = vl <> keyword "overwrite" <+> prettyVal x <+> prettyVal y
 prettyExp vl (BaseOp Redirect [x,y]) = vl <> keyword "redirect" <+> prettyVal x <+> prettyVal y
 prettyExp vl (BaseOp PokeVal [x,y]) = vl <> keyword "pokeVal" <+> prettyVal x <+> prettyVal y
@@ -93,13 +93,13 @@ prettyExp vl (BaseOp GcTouch xs) = vl <> keyword "gcTouch" <+> tupled (map prett
 prettyExp vl (BaseOp Demote [x]) = vl <> keyword "demote" <+> prettyVal x
 prettyExp vl (BaseOp (StoreNode b) [x]) = vl <> keyword ((if b then "d" else "i") ++ "store") <+> prettyVal x
 prettyExp vl (BaseOp (StoreNode b) [x,y]) = vl <> keyword ((if b then "d" else "i") ++ "store") <+> prettyVal x <> char '@' <> prettyVal y
-prettyExp vl (Case v vs) = vl <> keyword "case" <+> prettyVal v <+> keyword "of" <$> indent 2 (vsep (map f vs)) where
+prettyExp vl (Case v vs) = vl <> keyword "case" <+> prettyVal v <+> keyword "of" <$$$> indent 2 (vsep (map f vs)) where
     f (~[v] :-> e) | isOneLine e = prettyVal v <+> operator "->" <+> prettyExp empty e
-    f (~[v] :-> e) = prettyVal v <+> operator "->" <+> keyword "do" <$> indent 2 (prettyExp empty e)
-prettyExp vl NewRegion { expLam = (r :-> body)} = vl <> keyword "region" <+> text "\\" <> prettyVals r <+> text "-> do" <$> indent 2 (prettyExp empty body)
---prettyExp vl MkCont { expCont = (r :-> body) } = vl <> keyword "continuation" <+> text "\\" <> prettyVal r <+> text "-> do" <$> indent 2 (prettyExp empty body)
-prettyExp vl Let { expDefs = defs, expBody = body, .. } = vl <> keyword (if expIsNormal then "let" else "let*") <$> indent 4 (vsep $ map f defs) <$> text " in" <$> indent 2 (prettyExp empty body) where
-    f FuncDef { funcDefName = name, funcDefBody = as :-> body } = func (show name) <+> hsep (map prettyVal as) <+> operator "=" <+> keyword "do" <$> indent 2 (prettyExp empty body)
+    f (~[v] :-> e) = prettyVal v <+> operator "->" <+> keyword "do" <$$$> indent 2 (prettyExp empty e)
+prettyExp vl NewRegion { expLam = (r :-> body)} = vl <> keyword "region" <+> text "\\" <> prettyVals r <+> text "-> do" <$$$> indent 2 (prettyExp empty body)
+--prettyExp vl MkCont { expCont = (r :-> body) } = vl <> keyword "continuation" <+> text "\\" <> prettyVal r <+> text "-> do" <$$$> indent 2 (prettyExp empty body)
+prettyExp vl Let { expDefs = defs, expBody = body, .. } = vl <> keyword (if expIsNormal then "let" else "let*") <$$$> indent 4 (vsep $ map f defs) <$$$> text " in" <$$$> indent 2 (prettyExp empty body) where
+    f FuncDef { funcDefName = name, funcDefBody = as :-> body } = func (show name) <+> hsep (map prettyVal as) <+> operator "=" <+> keyword "do" <$$$> indent 2 (prettyExp empty body)
 prettyExp vl Alloc { expValue = val, expCount = Lit n _, expRegion = r }| n == 1 = vl <> keyword "alloc" <+> prettyVal val <+> text "at" <+> prettyVal r
 prettyExp vl Alloc { expValue = val, expCount = count, expRegion = r } = vl <> keyword "alloc" <+> prettyVal val <> text "[" <> prettyVal count <> text "]" <+> text "at" <+> prettyVal r
 prettyExp vl Call { expValue = Item t (TyCall fun _ _), expArgs = vs, expJump = jump } | fun `elem` [Function,LocalFunction] =  vl <> f jump  <+> func (fromAtom t) <+> hsep (map prettyVal vs) where
@@ -144,7 +144,7 @@ instance DocLike d => PPrint d Var where
 --pv (V i) = char 'v' <> tshow i
 
 prettyFun :: (Atom,Lam) -> Doc
-prettyFun (n,(as :-> e)) = func (fromAtom n) <+> hsep (map prettyVal as) <+> operator "=" <+> keyword "do" <$> indent 2 (prettyExp empty e)
+prettyFun (n,(as :-> e)) = func (fromAtom n) <+> hsep (map prettyVal as) <+> operator "=" <+> keyword "do" <$$$> indent 2 (prettyExp empty e)
 
 render :: Doc -> String
 render doc =  displayS (renderPretty 0.95 (optColumns options)  doc) ""

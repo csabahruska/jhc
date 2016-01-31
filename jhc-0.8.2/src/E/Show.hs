@@ -46,7 +46,7 @@ instance PPrint String (Lit E E) where
                       | otherwise = parens (prettyE (ELit x))
 
 newtype SEM a = SEM { _unSEM :: VarNameT E Id String Identity a }
-    deriving(Monad,Functor)
+    deriving(Monad,Functor,Applicative)
 
 enumList = [
     (tc_Bool_,["False#","True#"]),
@@ -178,7 +178,7 @@ showE e = do
             foldr (\(_, tvr, _) -> allocTVr tvr)
                   (do tops <- mapM p as
                       e <- showE e
-                      return (fixitize (N,1) $ atom $ group $ (align $ skipToNest <> fillCat tops) <$> unparse e))
+                      return (fixitize (N,1) $ atom $ group $ (align $ skipToNest <> fillCat tops) <$$$> unparse e))
                   as
             where
               p :: (Doc, TVr, Bool) -> SEM Doc
@@ -203,8 +203,8 @@ showE e = do
             e <- fmap unparse $ showE e
             ds <- mapM (fmap unparse . showDecl) ds
             return $ fixitize (N,98) $ atom $ nest 2 (group ( keyword "let"
-                                                                  <$> (align $ sep (map (<> char ';') ds))
-                                                                  <$> (keyword "in")) </> e )) ds
+                                                                  <$$$> (align $ sep (map (<> char ';') ds))
+                                                                  <$$$> (keyword "in")) </> e )) ds
 
         f ec@(ECase { eCaseScrutinee = e, eCaseAlts = alts }) = mt (showE (eCaseType ec)) $  allocTVr (eCaseBind ec) $ do
             scrut <- fmap unparse $ showE e
@@ -222,7 +222,7 @@ showE e = do
                       | (isUsed && isNothing (eCaseDefault ec)) || dump FD.EVerbose = text " " <> (if isUsed then id else (char '_' <>)) (unparse db) <+> text "<-"
                       | otherwise = empty
             return $ fixitize ((N,98)) $ atom $
-                group (nest 2 ( keyword "case" <> mbind <+> scrut <+> keyword "of" <$>  (align $ vcat alts')) )
+                group (nest 2 ( keyword "case" <> mbind <+> scrut <+> keyword "of" <$$$>  (align $ vcat alts')) )
         f _ = error "undefined value in E.Show"
         showAlt (Alt l e) = foldr allocTVr ans (litBinds l) where
             ans = do

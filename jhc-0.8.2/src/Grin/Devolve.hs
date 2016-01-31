@@ -74,7 +74,7 @@ data Env = Env {
     }
 
 newtype R a = R (RWS Env (Set.Set Var) () a)
-    deriving(Monad,Functor,MonadReader Env,MonadWriter (Set.Set Var))
+    deriving(Monad,Functor,MonadReader Env,MonadWriter (Set.Set Var),Applicative)
 
 runR (R x) = fst $ evalRWS x Env { envRoots = mempty, envMap = mempty, envVar = v1 } ()
 
@@ -141,7 +141,7 @@ twiddleExp e = f e where
 
 instance Twiddle Lam where
     twiddle (vs :-> y) = do
-        let fvs = freeVars vs
+        let fvs = freeVars vs :: [Var]
         (y,uv) <- censor (Set.filter (`notElem` fvs)) $ listen (twiddle y)
         let fvp' = Map.fromList $ concatMap (\v -> if v `Set.member` uv then [] else [(v,v0)]) fvs
         vs <- censor (const mempty) . local (\e -> e { envMap = fvp' }) $ twiddle vs

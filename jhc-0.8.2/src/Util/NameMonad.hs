@@ -1,5 +1,6 @@
 module Util.NameMonad(NameMonad(..),GenName(..),NameMT,runNameMT,runNameMT',freeNames,mixInt,mixInt3,hashInt) where
 
+import Control.Applicative
 import Control.Monad.State
 import Data.Bits
 import Data.Word
@@ -48,7 +49,7 @@ instance (Monad m, Monad (t m), MonadTrans t, NameMonad n m) => NameMonad n (t m
 
 -- | Name monad transformer.
 newtype NameMT n m a = NameMT (StateT (Set.Set n, Set.Set n) m a)
-    deriving(Monad, MonadTrans, Functor, MonadFix, MonadPlus, MonadIO)
+    deriving(Monad, MonadTrans, Functor, MonadFix, MonadPlus, MonadIO, Applicative, Alternative)
 
 -- | Run the name monad transformer.
 runNameMT :: (Monad m) => NameMT a1 m a -> m a

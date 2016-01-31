@@ -11,7 +11,7 @@ module E.Traverse(
     ) where
 
 import Control.Monad.Reader
-import Control.Monad.Writer.Strict
+import Control.Monad.Writer.Strict hiding (Alt)
 import Data.Maybe
 import qualified Data.Traversable as T
 

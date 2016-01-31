@@ -188,7 +188,7 @@ performSpeculate specs grin = do
 findSpeculatable :: Grin -> [Atom]
 findSpeculatable grin = ans where
     ans = [ x | Left (x,_) <- scc graph ]
-    graph = newGraph [ (a,concatMap f (freeVars l)) | (a,_ :-> l) <- grinFuncs grin, isSpeculatable l, getType l == [TyNode] ] fst snd
+    graph = newGraph [ (a,concatMap f (freeVars l :: [Tag])) | (a,_ :-> l) <- grinFuncs grin, isSpeculatable l, getType l == [TyNode] ] fst snd
     f t | tagIsSuspFunction t = [tagFlipFunction t]
         | tagIsFunction t = [t]
         | otherwise = []

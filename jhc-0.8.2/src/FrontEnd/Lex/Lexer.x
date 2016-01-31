@@ -371,6 +371,15 @@ runAlex input (Alex f)
 
 newtype Alex a = Alex { unAlex :: AlexState -> Either String (AlexState, a) }
 
+instance Functor Alex where
+  fmap f v  = Alex $ \s -> case unAlex v s of
+                                Left msg -> Left msg
+                                Right (s',a) -> Right (s', f a)
+
+instance Applicative Alex where
+  m <*> k  = ap m k
+  pure a = Alex $ \s -> Right (s,a)
+
 instance Monad Alex where
   m >>= k  = Alex $ \s -> case unAlex m s of
                                 Left msg -> Left msg

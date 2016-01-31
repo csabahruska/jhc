@@ -14,7 +14,7 @@ module E.TypeCheck(
     ) where
 
 import Control.Monad.Reader
-import Control.Monad.Writer
+import Control.Monad.Writer hiding (Alt)
 import qualified Data.Map as Map
 
 import Doc.DocLike
@@ -428,7 +428,7 @@ data TcEnv = TcEnv {
 tcContext_u f r@TcEnv{tcContext  = x} = r{tcContext = f x}
 
 newtype Tc a = Tc (Reader TcEnv a)
-    deriving(Monad,Functor,MonadReader TcEnv)
+    deriving(Monad,Functor,MonadReader TcEnv,Applicative)
 
 instance ContextMonad Tc where
     type ContextOf Tc = String

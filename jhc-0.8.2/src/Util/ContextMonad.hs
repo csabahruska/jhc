@@ -11,7 +11,7 @@ instance Error [String] where
     strMsg s = [s]
 
 newtype ContextEither a = ContextEither (Either [String] a)
-    deriving(Functor)
+    deriving(Functor,Applicative)
 
 runContextEither (ContextEither a) = a
 

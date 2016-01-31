@@ -1,6 +1,6 @@
 module E.WorkerWrapper(performWorkWrap,workWrapProgram) where
 
-import Control.Monad.Writer.Strict hiding(Product(..))
+import Control.Monad.Writer.Strict hiding(Product(..),Alt)
 import Maybe
 
 import DataConstructors

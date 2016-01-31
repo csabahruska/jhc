@@ -1,7 +1,7 @@
 module E.Values where
 
 import Control.Monad.Identity
-import Data.Monoid
+import Data.Monoid hiding (Alt)
 import List
 import Ratio
 

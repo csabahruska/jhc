@@ -5,7 +5,7 @@ module Util.Seq(
           , cons
           , snoc
 
-          , toList
+          , Util.Seq.toList
           , appendToList
           , fromList
           , Util.Seq.concat
@@ -54,11 +54,15 @@ instance Applicative Seq where
     pure = return
     (<*>) = ap
 
+instance Alternative Seq where
+    empty = mempty
+    (<|>) = mappend
+
 instance Traversable Seq where
     traverse f (Seq g) = fmap fromList (traverse f (g []))
 
 instance Foldable Util.Seq.Seq where
-    foldMap f s = mconcat (map f (toList s))
+    foldMap f s = mconcat (map f (Util.Seq.toList s))
 
 instance MonadPlus Util.Seq.Seq where
     mplus = mappend

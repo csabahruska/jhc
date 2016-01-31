@@ -13,7 +13,7 @@ import qualified Data.Sequence as Seq
 type St = (Int,FilePath,String)
 
 newtype P a = P (State St a)
-    deriving(Monad,MonadState St)
+    deriving(Monad,MonadState St,Applicative,Functor)
 
 third (_,_,x) = x
 

@@ -77,7 +77,7 @@ rEMap_u f r@Env{rEMap  = x} = r{rEMap = f x}
 rInscope_u f r@Env{rInscope  = x} = r{rInscope = f x}
 
 newtype C a = C (RWST Env Written HcHash Uniq a)
-    deriving(Monad,UniqueProducer,MonadState HcHash,MonadWriter Written,MonadReader Env,Functor)
+    deriving(Monad,UniqueProducer,MonadState HcHash,MonadWriter Written,MonadReader Env,Functor,Applicative)
 
 runC :: Grin -> C a -> ((a,HcHash,Written),Map.Map Atom TyRep)
 runC grin (C m) =  (execUniq1 (runRWST m startEnv emptyHcHash),ityrep) where

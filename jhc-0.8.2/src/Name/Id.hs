@@ -35,6 +35,7 @@ module Name.Id(
     runIdNameT
     )where
 
+import Control.Applicative
 import Control.Monad.Reader
 import Control.Monad.State
 import Data.Bits
@@ -170,7 +171,7 @@ idMapToIdSet (IntjectionMap im)  = IntjectionSet $ IM.keysSet im
 
 -- | Name monad transformer.
 newtype IdNameT m a = IdNameT (StateT (IdSet, IdSet) m a)
-    deriving(Monad, MonadTrans, Functor, MonadFix, MonadPlus, MonadIO)
+    deriving(Monad, MonadTrans, Functor, MonadFix, MonadPlus, MonadIO, Applicative,Alternative)
 
 instance (MonadReader r m) => MonadReader r (IdNameT m) where
 	ask       = lift ask

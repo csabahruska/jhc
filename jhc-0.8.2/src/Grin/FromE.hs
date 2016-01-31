@@ -69,7 +69,7 @@ unboxedMap = [
     ]
 
 newtype C a = C (ReaderT LEnv IO a)
-    deriving(Monad,MonadReader LEnv,UniqueProducer,Functor,MonadIO,Stats.MonadStats)
+    deriving(Monad,MonadReader LEnv,UniqueProducer,Functor,MonadIO,Stats.MonadStats,Applicative)
 
 runC :: LEnv -> C a -> IO a
 runC lenv (C x) = runReaderT x lenv
@@ -180,7 +180,7 @@ compile prog@Program { progDataTable = dataTable } = do
         os <- onceMapToList errorOnce
         mapM_ print os
     let tf a = a:tagToFunction a
-    ds <- return $ flattenScc $ stronglyConnComp [ (a,x, concatMap tf (freeVars z)) | a@(x,(_ :-> z)) <- ds]
+    ds <- return $ flattenScc $ stronglyConnComp [ (a,x, concatMap tf (freeVars z :: [Tag])) | a@(x,(_ :-> z)) <- ds]
 
     -- FFI
     let tvrAtom t  = liftM convertName (fromId $ tvrIdent t)
@@ -517,7 +517,7 @@ compile' cenv (tvr,as,e) = ans where
                     def <- createDef d newNodeVar
                     return $ e :>>= [toVal b] :-> Case (toVal b) (as ++ def)
     ce e = error $ render (text "Grin.FromE.compile'.ce in function:" <+> pprint funcName
-                           <$> text "can't grok expression:" <+> pprint e)
+                           <$$$> text "can't grok expression:" <+> pprint e)
 
     localEvaled vs v action = local (\lenv -> lenv { evaledMap = nm `mappend` evaledMap lenv }) action where
         nm = fromList [ (tvrIdent x, v) | x <- vs, tvrIdent x /= emptyId ]

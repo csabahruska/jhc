@@ -214,7 +214,7 @@ boxyMatch s1 s2 = do
     -- Associated type
     bm ta@TAssoc {} (TMetaVar mv) = do
         ta' <- evalFullType ta
-        if mv `elem` freeVars ta' then do
+        if mv `elem` (freeVars ta' :: [MetaVar]) then do
             printRule "ASSOC-OCCURS"
             addPreds [IsEq ta' (TMetaVar mv)]
          else do

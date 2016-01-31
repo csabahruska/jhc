@@ -11,7 +11,7 @@ module E.Demand(
     ) where
 
 import Control.Monad.Reader
-import Control.Monad.Writer hiding(Product(..))
+import Control.Monad.Writer hiding(Product(..),Alt)
 import Data.Binary
 import Data.List hiding(union,delete)
 import Data.Typeable
@@ -184,7 +184,7 @@ instance Lattice DemandEnv where
         m = fromList [ (x,lenv x d1 `glb` lenv x d2) | x <- keys (m1 `union` m2)]
 
 newtype IM a = IM (Reader (Env,DataTable) a)
-    deriving(Monad,Functor,MonadReader (Env,DataTable))
+    deriving(Monad,Functor,MonadReader (Env,DataTable),Applicative)
 
 type Env = IdMap (Either DemandSignature E)
 

@@ -3,8 +3,8 @@
 -- modified from Control.Monad.RWS by John Meacham to be strict
 
 module Util.RWS (
-	RWS,
-        runRWS,
+--	RWS,
+--        runRWS,
 --	evalRWS,
 --	execRWS,
 --	mapRWS,
@@ -17,6 +17,7 @@ module Util.RWS (
 	module Control.Monad.Reader,
 	module Control.Monad.Writer,
 	module Control.Monad.State,
+	module Control.Monad.RWS.Strict
   ) where
 
 import Prelude
@@ -27,7 +28,8 @@ import Control.Monad.Trans
 import Control.Monad.Reader
 import Control.Monad.Writer
 import Control.Monad.State
-
+import Control.Monad.RWS.Strict
+{-
 newtype RWS r w s a = RWS { runRWS' :: r -> s -> (# a, s, w #) }
 
 runRWS :: RWS r w s a -> r -> s -> (a,s,w)
@@ -65,7 +67,7 @@ instance (Monoid w) => MonadWriter w (RWS r w s) where
 instance (Monoid w) => MonadState s (RWS r w s) where
 	get   = RWS $ \_ s -> (# s, s, mempty #)
 	put !s = RWS $ \_ _ -> (# (), s, mempty #)
-
+-}
 {-
 evalRWS :: RWS r w s a -> r -> s -> (a, w)
 evalRWS m r s = let

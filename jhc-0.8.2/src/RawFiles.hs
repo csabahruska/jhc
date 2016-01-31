@@ -160,7 +160,7 @@ targets_ini = unsafePerformIO $ unsafePackAddress "\
  \; cross compilation entries\n\
  \\n\
  \[win32]\n\
- \cc=i586-mingw32msvc-gcc\n\
+ \cc=i386-mingw32-gcc\n\
  \executable_extension=.exe\n\
  \merge=i686\n\
  \\n\

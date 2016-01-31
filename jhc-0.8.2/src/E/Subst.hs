@@ -136,7 +136,7 @@ doSubst' substInVars allShadow bm check e  = f e (Set.empty, bm) where
         alts <- local r (mapM da $ eCaseAlts ec)
         nty <- f (eCaseType ec)
         return  $ caseUpdate ec { eCaseScrutinee = e', eCaseDefault = d, eCaseBind = b', eCaseAlts = alts, eCaseType = nty }
-    lp lam tvr@(TVr { tvrIdent = n, tvrType = t}) e | n == emptyId || (allShadow && n `notElem` freeVars e) = do
+    lp lam tvr@(TVr { tvrIdent = n, tvrType = t}) e | n == emptyId || (allShadow && n `notElem` (freeVars e :: [Id])) = do
         t' <- f t
         e' <- local (\(s,m) -> (Set.insert n s, delete n m)) $ f e
         return $ lam (tvr { tvrIdent =  emptyId, tvrType =  t'}) e'

@@ -5,7 +5,7 @@ module E.FreeVars(
     freeIds
     ) where
 
-import Data.Monoid
+import Data.Monoid hiding (Alt)
 
 import E.Type
 import GenUtil

@@ -73,7 +73,7 @@ data Inst = Inst {
 
 instance PPrint a (Qual Pred) => PPrint a Inst where
     pprint Inst { instHead = h, instAssocs = [], instDerived = d } = (if d then text "*" else text " ") <> pprint h
-    pprint Inst { instHead = h, instAssocs = as, instDerived = d } = (if d then text "*" else text " ") <> pprint h <+> text "where" <$> vcat [ text "    type" <+> pprint n <+> text "_" <+> hsep (map pprint ts) <+> text "=" <+> pprint sigma  | (n,_,ts,sigma) <- as]
+    pprint Inst { instHead = h, instAssocs = as, instDerived = d } = (if d then text "*" else text " ") <> pprint h <+> text "where" <$$$> vcat [ text "    type" <+> pprint n <+> text "_" <+> hsep (map pprint ts) <+> text "=" <+> pprint sigma  | (n,_,ts,sigma) <- as]
 
 emptyInstance = Inst { instDerived = False, instSrcLoc = bogusASrcLoc, instHead = error "emptyInstance", instAssocs = [] }
 

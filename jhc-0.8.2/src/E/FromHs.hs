@@ -10,7 +10,7 @@ import Char
 import Control.Applicative(Applicative)
 import Control.Monad.Error
 import Control.Monad.Identity
-import Control.Monad.RWS
+import Control.Monad.RWS hiding (Alt)
 import List(isPrefixOf,nub)
 import Prelude
 import Text.Printf
@@ -93,7 +93,7 @@ tipe t = f t where
     f (TCon (Tycon n k)) =  ELit litCons { litName = n, litType = kind k }
     f (TVar tv) = EVar (cvar [] tv)
     f (TMetaVar mv) = cmvar mv
-    f (TForAll vs (ps :=> t)) = foldr EPi (f t) (map (cvar $ freeVars ps) vs)
+    f (TForAll vs (ps :=> t)) = foldr EPi (f t) (map (cvar $ (freeVars ps :: [Tyvar])) vs)
     f (TExists xs (_ :=> t)) = let
         xs' = map (kind . tyvarKind) xs
         in ELit litCons { litName = unboxedNameTuple TypeConstructor (length xs' + 1), litArgs = f t:xs', litType = eHash }
@@ -956,9 +956,9 @@ specializeE gt st = do
                 Nothing -> fail $ "specializeE: variable not bound: " ++ pprint (((gt,st),(mm,tvr)),(zs,x))
         f zs (EPi vbind exp) = f (vbind:zs) exp
         f _ _ = fail $ render (text "specializeE: attempt to specialize types that do not unify:"
-                               <$> pprint (gt,st)
-                               <$> tshow  gt
-                               <$> tshow st)
+                               <$$$> pprint (gt,st)
+                               <$$$> tshow  gt
+                               <$$$> tshow st)
     f [] gt
 
 procAllSpecs :: Monad m => DataTable -> [Type.Rule] -> [(TVr,E)] -> m ([(TVr,E)],Rules)
@@ -1029,6 +1029,6 @@ marshallFromC ce te = do
 
 extractUnboxedTup :: E -> ([E] -> C E) -> C E
 extractUnboxedTup e f = do
-    vs <- newVars $ concat (fromTuple_ (getType e))
+    vs <- newVars $ mconcat (fromTuple_ (getType e))
     a <- f (map EVar vs)
     return $ eCaseTup' e vs a

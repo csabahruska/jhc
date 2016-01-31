@@ -1,6 +1,7 @@
 module FindFixpoint(Ms, getVal, solve) where
 
 import Array
+import Control.Monad (ap)
 import Control.Monad.Writer
 import Data.Array.IO
 import Data.Graph
@@ -9,6 +10,10 @@ import Util.Gen
 
 data Env b  = Env {-# UNPACK #-} !(IOArray Int b) {-# UNPACK #-} !(IOArray Int (IntSet)) {-# UNPACK #-} !Int
 newtype Ms b c = Ms' (Env b -> IO c)
+
+instance Applicative (Ms b) where
+    pure = return 
+    (<*>) = ap
 
 instance Monad (Ms b) where
     return a = Ms' (\_ -> return a)

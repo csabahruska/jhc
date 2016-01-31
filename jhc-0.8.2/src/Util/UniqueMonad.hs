@@ -42,7 +42,7 @@ instance (Monad m, Monad (t m), MonadTrans t, UniqueProducer m) => UniqueProduce
 
 -- | Unique integer generator monad transformer.
 newtype UniqT m a = UniqT (StateT Int m a)
-    deriving(Monad, Applicative, MonadTrans, Functor, MonadFix, MonadPlus)
+    deriving(Monad, Applicative, MonadTrans, Functor, MonadFix, MonadPlus, Alternative)
 
 instance MonadReader s m => MonadReader s (UniqT m) where
     ask = UniqT $  ask

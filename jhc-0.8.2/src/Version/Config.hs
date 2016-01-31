@@ -5,7 +5,7 @@ version = "0.8.2"
 package = "jhc"
 libdir  = "/usr/local/lib"
 datadir = "/usr/local/share"
-host    = "x86_64-unknown-linux-gnu"
+host    = "i386-apple-darwin14.5.0"
 libraryInstall = "/usr/local/share/jhc-0.8"
 confDir = "/usr/local/etc/jhc-0.8"
 

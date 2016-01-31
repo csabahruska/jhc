@@ -255,6 +255,15 @@ runAlex input (Alex f)
 
 newtype Alex a = Alex { unAlex :: AlexState -> Either String (AlexState, a) }
 
+instance Functor Alex where
+  fmap f v  = Alex $ \s -> case unAlex v s of
+                                Left msg -> Left msg
+                                Right (s',a) -> Right (s', f a)
+
+instance Applicative Alex where
+  m <*> k  = ap m k
+  pure a = Alex $ \s -> Right (s,a)
+
 instance Monad Alex where
   m >>= k  = Alex $ \s -> case unAlex m s of
                                 Left msg -> Left msg
@@ -339,16 +348,9 @@ alex_action_38 =  mkL LChar_
 alex_action_39 =  mkL LFloat_ 
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
-{-# LINE 1 "<command-line>" #-}
-
-
-
-
-
-
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-
-# 17 "/usr/include/stdc-predef.h" 3 4
+{-# LINE 1 "<built-in>" #-}
+{-# LINE 17 "<built-in>" #-}
+{-# LINE 1 "/Applications/ghc-7.10.1.app/Contents/lib/ghc-7.10.1/include/ghcversion.h" #-}
 
 
 
@@ -363,31 +365,11 @@ alex_action_39 =  mkL LFloat_
 
 
 
-# 1 "/usr/include/x86_64-linux-gnu/bits/predefs.h" 1 3 4
-
-# 18 "/usr/include/x86_64-linux-gnu/bits/predefs.h" 3 4
 
 
 
 
-
-
-
-
-
-
-
-
-# 31 "/usr/include/stdc-predef.h" 2 3 4
-
-
-
-
-
-
-
-
-# 6 "<command-line>" 2
+{-# LINE 18 "<built-in>" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 -- -----------------------------------------------------------------------------
 -- ALEX TEMPLATE
@@ -398,12 +380,14 @@ alex_action_39 =  mkL LFloat_
 -- -----------------------------------------------------------------------------
 -- INTERNALS and main scanner engine
 
+
 {-# LINE 21 "templates/GenericTemplate.hs" #-}
 
 
 
 
 
+-- Do not remove this comment. Required to fix CPP parsing when using GCC and a clang-compiled alex.
 #if __GLASGOW_HASKELL__ > 706
 #define GTE(n,m) (tagToEnum# (n >=# m))
 #define EQ(n,m) (tagToEnum# (n ==# m))
@@ -411,11 +395,12 @@ alex_action_39 =  mkL LFloat_
 #define GTE(n,m) (n >=# m)
 #define EQ(n,m) (n ==# m)
 #endif
-{-# LINE 50 "templates/GenericTemplate.hs" #-}
+
+{-# LINE 51 "templates/GenericTemplate.hs" #-}
 
 
 data AlexAddr = AlexA# Addr#
-
+-- Do not remove this comment. Required to fix CPP parsing when using GCC and a clang-compiled alex.
 #if __GLASGOW_HASKELL__ < 503
 uncheckedShiftL# = shiftL#
 #endif
@@ -453,6 +438,7 @@ alexIndexInt32OffAddr (AlexA# arr) off =
 #else
   indexInt32OffAddr# arr off
 #endif
+
 
 
 
@@ -605,3 +591,4 @@ alexRightContext (I# (sc)) user _ _ input =
 
 -- used by wrappers
 iUnbox (I# (i)) = i
+

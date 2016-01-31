@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 module C.Generate(
     Annotate(..),
     Structure(..),
@@ -71,6 +72,7 @@ module C.Generate(
     voidStarType
     ) where
 
+import Prelude hiding ((<$>))
 import Char
 import Control.Monad
 import Control.Monad.RWS(RWS,MonadState(..),MonadWriter(..),MonadReader(..),runRWS,asks,MonadFix(..))
@@ -100,7 +102,7 @@ data Env = Env {
 emptyEnv = Env { envUsedLabels = mempty, envInScope = mempty }
 
 newtype G a = G (RWS Env [(Name,Type)] (Int,Map.Map [Type] Name) a)
-    deriving(Monad,MonadWriter [(Name,Type)],MonadState (Int,Map.Map [Type] Name),MonadReader Env,MonadFix)
+    deriving(Monad,MonadWriter [(Name,Type)],MonadState (Int,Map.Map [Type] Name),MonadReader Env,MonadFix, Applicative, Functor)
 
 newtype Name = Name String
     deriving(Eq,Ord)

@@ -94,7 +94,7 @@ instance Show V where
     showsPrec _ VIgnore = showString "IGN"
 
 newtype M a = M (RWS TyEnv (C N V) Int a)
-    deriving(Monad,Functor,MonadWriter (C N V))
+    deriving(Monad,Functor,MonadWriter (C N V),Applicative)
 
 runM :: Grin -> M a -> C N V
 runM grin (M w) = case runRWS w (grinTypeEnv grin) 1 of

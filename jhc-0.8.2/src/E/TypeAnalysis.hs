@@ -7,7 +7,7 @@ import Control.Monad.Error
 import Control.Monad.Identity
 import Control.Monad.State
 import Data.Maybe
-import Data.Monoid
+import Data.Monoid hiding (Alt)
 import qualified Data.Foldable as T
 import qualified Data.Map as Map
 import qualified Data.Set as Set

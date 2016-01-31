@@ -37,6 +37,7 @@ import Data.Binary
 import GHC.Generics (Generic)
 
 import Util.Std
+import Control.Monad (ap)
 import Control.Monad.Reader
 import Control.Monad.Writer.Strict
 import Data.IORef
@@ -122,7 +123,7 @@ class Monad m => MonadStats m where
     mtickStat :: Stat -> m ()
 
 newtype StatT m a = StatT (WriterT Stat m a)
-    deriving(MonadIO, Functor, MonadFix, MonadTrans, Monad)
+    deriving(MonadIO, Functor, MonadFix, MonadTrans, Monad, Applicative)
 
 runStatT :: Monad m => StatT m a -> m (a,Stat)
 runStatT (StatT m) =  runWriterT m
@@ -131,6 +132,10 @@ data StatM a = StatM a !Stat
 
 instance Functor StatM where
     fmap f (StatM a s) = StatM (f a) s
+
+instance Applicative StatM where
+    (<*>) = ap
+    pure = return
 
 instance Monad StatM where
     StatM _ s1 >> StatM y s2 = StatM y (s1 `mappend` s2)

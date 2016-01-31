@@ -8,7 +8,7 @@ module E.LetFloat(
 
 import Control.Monad.Identity
 import Control.Monad.Reader
-import Control.Monad.Writer
+import Control.Monad.Writer hiding (Alt)
 import Data.Typeable
 import List  hiding(delete,insert)
 import qualified Data.Map as Map

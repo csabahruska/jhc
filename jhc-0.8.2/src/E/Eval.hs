@@ -1,5 +1,7 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 module E.Eval(eval, strong) where
 
+import Prelude hiding ((<$>))
 -- Simple lambda Calculus interpreter
 -- does not handle recursive Let or Case statements, but those don't appear in types anyway.
 

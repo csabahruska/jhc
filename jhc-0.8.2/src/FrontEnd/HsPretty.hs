@@ -23,6 +23,7 @@ module FrontEnd.HsPretty (PPLayout(..),PPHsMode(..),
 import Data.Char
 import qualified Text.PrettyPrint.HughesPJ as P
 
+import Control.Monad (ap)
 import Doc.DocLike(TextLike(..),DocLike(..))
 import Doc.PPrint(pprint)
 import FlagDump as FD
@@ -76,6 +77,10 @@ newtype DocM s a = DocM (s -> a)
 
 instance Functor (DocM s) where
 	 fmap f xs = do x <- xs; return (f x)
+
+instance Applicative (DocM s) where
+  pure = return
+  (<*>) = ap
 
 instance Monad (DocM s) where
 	(>>=) = thenDocM
