@@ -12,8 +12,6 @@ import qualified Data.Set as Set
 import qualified System
 import qualified System.FilePath as FP
 
-import Data.Binary
-
 import C.Prims
 import Grin.DeadCode
 import Grin.Devolve(twiddleGrin,devolveTransform)
@@ -92,7 +90,6 @@ compileGrinToC grin = do
         rls = filter ("-l" `isPrefixOf`) $ map (unpackPS . snd) (Set.toList reqs)
         fn = outputName ++ lup "executable_extension"
         lup k = maybe "" id $ Map.lookup k (optInis options)
-    encodeFile (fn ++ ".grinbin") grin -- dump grin code
     cf <- case (optOutName options,optStop options) of
             (Just fn,StopC) -> return fn
             _ | dump FD.C -> return (fn ++ "_code.c")

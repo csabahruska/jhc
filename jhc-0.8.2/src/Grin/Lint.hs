@@ -10,6 +10,8 @@ import Control.Monad.Reader
 import Data.Monoid
 import System.IO
 import qualified Data.Set as Set
+import Data.Binary
+import qualified Data.ByteString.Lazy as LB
 
 import Doc.DocLike
 import Grin.Grin
@@ -56,6 +58,8 @@ dumpGrin pname grin = do
     fn "grin" $ \h -> do
         hPutStrLn h $ unlines [ "-- " ++ argstring,"-- " ++ sversion,""]
         hPrintGrin h grin
+    fn "grinbin" $ \h -> do
+        LB.hPut h $ encode grin -- dump grin code
     wdump FD.GrinDatalog $ fn "datalog" $ \h -> do
         hPutStrLn h $ unlines [ "% " ++ argstring,"% " ++ sversion,""]
         hPrintGrinDL h grin
