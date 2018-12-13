@@ -34,7 +34,7 @@ $alpha     = [$small $large]
 
 $graphic   = [$small $large $symbol $digit $special \:\"\']   -- "
 
-$octit	   = 0-7
+$octit     = 0-7
 $hexit     = [0-9 A-F a-f]
 $idchar    = [$alpha $digit \']
 $symchar   = [$symbol \:]
@@ -42,9 +42,9 @@ $nl        = [\n\r]
 $ws        = [$unispace $white]
 
 @reservedid =
-	case|class|data|default|deriving|do|else|if|
-	import|in|infix|infixl|infixr|instance|let|module|newtype|
-	of|then|type|where|_
+        case|class|data|default|deriving|do|else|if|
+        import|in|infix|infixl|infixr|instance|let|module|newtype|
+        of|then|type|where|_
 
 -- reserved when certain extensions enabled
 @extreservedid =  foreign|forall|exists|kind|alias|prefixx|prefixy|family|closed
@@ -53,7 +53,7 @@ $ws        = [$unispace $white]
 @specialid = as|hiding|qualified
 
 @reservedop =
-	".." | "::" | "=" | \\ | "|" | "<-" | "->" | "=>"
+        ".." | "::" | "=" | \\ | "|" | "<-" | "->" | "=>"
      --   ".." | ":" | "::" | "=" | \\ | "|" | "<-" | "->" | "@" | "~" | "=>"
 
 @varid  = $small $idchar* $trailing*
@@ -68,9 +68,9 @@ $ws        = [$unispace $white]
 
 $cntrl   = [$large \@\[\\\]\^\_]
 @ascii   = \^ $cntrl | NUL | SOH | STX | ETX | EOT | ENQ | ACK
-	 | BEL | BS | HT | LF | VT | FF | CR | SO | SI | DLE
-	 | DC1 | DC2 | DC3 | DC4 | NAK | SYN | ETB | CAN | EM
-	 | SUB | ESC | FS | GS | RS | US | SP | DEL
+         | BEL | BS | HT | LF | VT | FF | CR | SO | SI | DLE
+         | DC1 | DC2 | DC3 | DC4 | NAK | SYN | ETB | CAN | EM
+         | SUB | ESC | FS | GS | RS | US | SP | DEL
 $charesc = [abfnrtv\\\"\'\&]                                                -- "
 @escape  = \\ ($charesc | @ascii | @decimal | o @octal | x @hexadecimal | \n)
 @gap     = \\ $whitechar+ \\
@@ -89,9 +89,9 @@ haskell :-
 
 <0>  ^"#!" .*              { begin hs }
 <0>  ""                    { begin hs }
-<hs> $ws+		   ;
+<hs> $ws+                  ;
 <hs> "--"\-*[^$symbol].*   ;
-<hs> "--"\-*$	           ;
+<hs> "--"\-*$              ;
 
 -- Handle CPP style line pragmas
 --<hs> ^"#line "                  { mkJL LPragmaStart "LINE" `andBegin` line_pragma }
@@ -113,32 +113,32 @@ haskell :-
 "{-#"                           { mkL LSpecial }
 "#-}"                           { mkL LSpecial }
 
-"{-"				{ nested_comment }
+"{-"                            { nested_comment }
 
 -----------------------
 -- reserved/special ops
 -----------------------
 
-<hs> $special			{ mkL LSpecial }
-<hs> @reservedid		{ mkL LReservedId }
-<hs> @extreservedid		{ mkL LReservedId }
-<hs> @specialid	                { mkL LVarId }
-<hs> @reservedop		{ mkL LReservedOp }
+<hs> $special                   { mkL LSpecial }
+<hs> @reservedid                { mkL LReservedId }
+<hs> @extreservedid             { mkL LReservedId }
+<hs> @specialid                 { mkL LVarId }
+<hs> @reservedop                { mkL LReservedOp }
 
 --------------------
 -- variables/symbols
 --------------------
 
-<hs> @varid		{ mkL LVarId }
-<hs> @conid		{ mkL LConId }
-<hs> @varsym		{ mkL LVarSym }
-<hs> @consym		{ mkL LConSym }
+<hs> @varid             { mkL LVarId }
+<hs> @conid             { mkL LConId }
+<hs> @varsym            { mkL LVarSym }
+<hs> @consym            { mkL LConSym }
 
 <hs> (@conid \.)+ @reservedid   { mkL LQReservedId }
 <hs> (@conid \.)+ @varid        { mkL LQVarId }
-<hs> (@conid \.)+ @conid	{ mkL LQConId }
-<hs> (@conid \.)+ @varsym	{ mkL LQVarSym }
-<hs> (@conid \.)+ @consym	{ mkL LQConSym }
+<hs> (@conid \.)+ @conid        { mkL LQConId }
+<hs> (@conid \.)+ @varsym       { mkL LQVarSym }
+<hs> (@conid \.)+ @consym       { mkL LQConSym }
 
 -----------
 -- literals
@@ -207,22 +207,22 @@ nested_comment _ _ = do
   input <- alexGetInput
   go 1 input
   where go 0 input = do alexSetInput input; alexMonadScan
-	go n input = do
-	  case alexGetChar input of
-	    Nothing  -> err input
-	    Just (c,input) -> do
-	      case c of
-	    	'-' -> do
-		  case alexGetChar input of
-		    Nothing  -> err input
-		    Just ('}',input) -> go (n-1) input
-		    Just (_c,_input)      -> go n input
-	     	'{' -> do
-		  case alexGetChar input of
-		    Nothing  -> err input
-		    Just ('-',input) -> go (n+1) input
-		    Just (c,input)   -> go n input
-	    	c -> go n input
+        go n input = do
+          case alexGetChar input of
+            Nothing  -> err input
+            Just (c,input) -> do
+              case c of
+                '-' -> do
+                  case alexGetChar input of
+                    Nothing  -> err input
+                    Just ('}',input) -> go (n-1) input
+                    Just (_c,_input)      -> go n input
+                '{' -> do
+                  case alexGetChar input of
+                    Nothing  -> err input
+                    Just ('-',input) -> go (n+1) input
+                    Just (c,input)   -> go n input
+                c -> go n input
         err input = do alexSetInput input; lexError "error in nested comment"
 
 {-
@@ -240,9 +240,9 @@ lexError :: String -> Alex a
 lexError s = do
   (p,c,bs,input) <- alexGetInput
   alexError (showPosn p ++ ": " ++ s ++
-		   (if (not (null input))
-		     then " before " ++ show (head input)
-		     else " at end of file"))
+                   (if (not (null input))
+                     then " before " ++ show (head input)
+                     else " at end of file"))
 
 scanner :: Opt -> String -> Either String [Lexeme]
 scanner opt str = runAlex str $ do
