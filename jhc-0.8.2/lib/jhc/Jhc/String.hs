@@ -69,7 +69,7 @@ unpackFoldrString addr f e = unpack addr where
                      (ord# (indexCharArray# addr (nh +# 3#)) -# 0x80#))) `f`
           unpack (nh +# 4#)
       where
-	ch = indexCharArray# addr nh
+        ch = indexCharArray# addr nh
 
 eqSingleChar :: Char_ -> [Char] -> Bool_
 eqSingleChar ch (Char c:cs) = case equalsChar ch c of

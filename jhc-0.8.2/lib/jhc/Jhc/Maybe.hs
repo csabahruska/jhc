@@ -25,7 +25,7 @@ instance Eq a => Eq (Maybe a) where
 instance (Show a) => Show (Maybe a) where
     showsPrec d (Nothing) = showString "Nothing"
     showsPrec d (Just aa) = showParen (d >= 10)
-	      (showString "Just" . showChar ' ' . showsPrec 10 aa)
+              (showString "Just" . showChar ' ' . showsPrec 10 aa)
 
 instance Ord a => Ord (Maybe a) where
     Just x `compare` Just y = x `compare` y
@@ -52,6 +52,6 @@ instance (Ord a,Ord b) => Ord (Either a b) where
 
 instance (Show a,Show b) => Show (Either a b) where
     showsPrec d (Left aa) = showParen (d >= 10)
-	      (showString "Left" . showChar ' ' . showsPrec 10 aa)
+              (showString "Left" . showChar ' ' . showsPrec 10 aa)
     showsPrec d (Right aa) = showParen (d >= 10)
-	      (showString "Right" . showChar ' ' . showsPrec 10 aa)
+              (showString "Right" . showChar ' ' . showsPrec 10 aa)

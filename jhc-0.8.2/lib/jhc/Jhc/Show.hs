@@ -45,8 +45,8 @@ instance (Show a, Show b) => Show (a,b)  where
 
 instance (Show a, Show b, Show c) => Show (a, b, c) where
     showsPrec _ (x,y,z) = showChar '(' . shows x . showChar ',' .
-					    shows y . showChar ',' .
-					    shows z . showChar ')'
+                                            shows y . showChar ',' .
+                                            shows z . showChar ')'
 
 instance Show a => Show [a]  where
     showsPrec p      = showList

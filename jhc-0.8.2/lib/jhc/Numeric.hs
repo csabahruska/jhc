@@ -122,10 +122,10 @@ showHex = showIntAtBase 16 intToDigit
 {-# SPECIALIZE showIntAtBase :: WordMax -> (Int -> Char) -> WordMax -> ShowS #-}
 
 showIntAtBase :: Integral a
-	      => a              -- base
-	      -> (Int -> Char)  -- digit to char
-	      -> a              -- number to show
-	      -> ShowS
+              => a              -- base
+              -> (Int -> Char)  -- digit to char
+              -> a              -- number to show
+              -> ShowS
 showIntAtBase base intToDig n rest
   | n < 0     = error $ "Numeric.showIntAtBase: can't show negative numbers " ++ show n
   | n' == 0   = rest'
@@ -191,7 +191,7 @@ formatRealFloat fmt decs x = s where
 
           FFFixed ->
             case decs of
-               Nothing 	-- Always prints a decimal point
+               Nothing  -- Always prints a decimal point
                  | e > 0     -> take e (ds ++ repeat '0')
                                 ++ '.' : mk0 (drop e ds)
                  | otherwise -> "0." ++ mk0 (replicate (-e) '0' ++ ds)
@@ -215,7 +215,7 @@ formatRealFloat fmt decs x = s where
 
               mkdot0 "" = ""       -- Print 34, not 34.
               mkdot0 s  = '.' : s  -- when the format specifies no
-			           -- digits after the decimal point
+                                   -- digits after the decimal point
 
 roundTo :: Int -> Int -> [Int] -> (Bool, [Int])
 roundTo base d is | base `seq` d `seq` True = case f d is of

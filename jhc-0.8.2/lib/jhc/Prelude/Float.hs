@@ -65,13 +65,13 @@ instance Floating $1 where
 instance RealFrac $1 where
     properFraction x
       = case (decodeFloat x)      of { (m,n) ->
-    	let  b = floatRadix x     in
-    	if n >= 0 then
-	    (fromInteger m * fromInteger b ^ n, 0.0)
-    	else
-	    case (quotRem m (b^(negate n))) of { (w,r) ->
-	    (fromInteger w, encodeFloat r n)
-	    }
+        let  b = floatRadix x     in
+        if n >= 0 then
+            (fromInteger m * fromInteger b ^ n, 0.0)
+        else
+            case (quotRem m (b^(negate n))) of { (w,r) ->
+            (fromInteger w, encodeFloat r n)
+            }
         }
 
     truncate x = fromInteger (toInteger$1 x)
@@ -107,9 +107,9 @@ INST(Float,Float32_,f)
 INST(Double,Float64_)
 
 instance Real Float where
-    toRational x	=  (m:%1)*(b:%1)^^n
-			   where (m,n) = decodeFloat x
-				 b     = floatRadix  x
+    toRational x        =  (m:%1)*(b:%1)^^n
+                           where (m,n) = decodeFloat x
+                                 b     = floatRadix  x
     toDouble x = floatToDouble x
 
 instance Real Double where
@@ -121,8 +121,8 @@ instance RealFloat Float where
     floatDigits _ = 24
     floatRange _ = (-125,128)
 
-    exponent x		= case decodeFloatf x of (_,n) -> n
-    significand x	= case decodeFloatf x of (m,_) -> m
+    exponent x          = case decodeFloatf x of (_,n) -> n
+    significand x       = case decodeFloatf x of (m,_) -> m
 
     isNaN x = c_isnanf x /= 0
     isInfinite x = c_isinfinitef x /= 0
@@ -146,8 +146,8 @@ instance RealFloat Double where
     floatDigits _ = 53
     floatRange _ = (-1021,1024)
 
-    exponent x		= case decodeFloatf x of (_,n) -> n
-    significand x	= case decodeFloatf x of (m,_) -> m
+    exponent x          = case decodeFloatf x of (_,n) -> n
+    significand x       = case decodeFloatf x of (m,_) -> m
 
     isNaN x = c_isnan x /= 0
     isInfinite x = c_isinfinite x /= 0

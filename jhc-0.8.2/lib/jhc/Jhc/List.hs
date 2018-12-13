@@ -20,14 +20,14 @@ augment g xs = g (:) xs
 {-# RULES "foldr/double"  forall k z x y . foldr k z [x,y] = k x (k y z) #-}
 {-# RULES "foldr/triple"  forall k z a b c . foldr k z [a,b,c] = k a (k b (k c z)) #-}
 {-# RULES "foldr/id"      foldr (:) [] = \x -> x  #-}
-{- "foldr/app"    	[1] forall ys. foldr (:) ys = \xs -> xs ++ ys -}
+{- "foldr/app"          [1] forall ys. foldr (:) ys = \xs -> xs ++ ys -}
 
 {-# RULES "foldr/build" forall k z (g :: forall b . (a -> b -> b) -> b -> b) . foldr k z (build g) = g k z #-}
 {-# RULES "foldr/augment" forall k z xs (g::forall b. (a->b->b) -> b -> b) .  foldr k z (augment g xs) = g k (foldr k z xs) #-}
 {-# RULES "foldr/single" forall k z x. foldr k z [x] = k x z #-}
 {-# RULES "augment/build" forall (g::forall b. (a->b->b) -> b -> b)
-		       (h::forall b. (a->b->b) -> b -> b) .
-		       augment g (build h) = build (\c n -> g c (h c n)) #-}
+                       (h::forall b. (a->b->b) -> b -> b) .
+                       augment g (build h) = build (\c n -> g c (h c n)) #-}
 {-# RULES "augment/nil"   forall (g::forall b. (a->b->b) -> b -> b) .  augment g [] = build g #-}
 
 {-# RULES "foldr/unpackString"  forall k z (addr::BitsPtr_) . foldr k z (unpackString addr) = unpackStringFoldr addr k z  #-}
@@ -108,7 +108,7 @@ infix  4  `elem`, `notElem`
 -- empty.
 
 elem, notElem    :: (Eq a) => a -> [a] -> Bool
-elem _ []	= False
+elem _ []       = False
 elem x (y:ys)
     | x == y = True
     | otherwise = f y ys where
@@ -121,7 +121,7 @@ elem x (y:ys)
 {-# RULES "elem/[]" forall c . elem c [] = False #-}
 {-# RULES "elem/[_]" forall c v . elem c [v] = c == v #-}
 
-notElem	_ []	=  True
+notElem _ []    =  True
 notElem x (y:ys)
     | x == y = False
     | otherwise = f y ys where
@@ -138,7 +138,7 @@ infixl 9  !!
 
 (!!)                :: [a] -> Int -> a
 xs !! n | n < zero  =  error "Prelude.(!!): negative index"
-	| otherwise =  sub xs n where
+        | otherwise =  sub xs n where
                 sub :: [a] -> Int -> a
                 sub _ n | n `seq` False = undefined
                 sub []     _ = error "Prelude.(!!): index too large"
@@ -222,7 +222,7 @@ filter p xs = build (\c n -> foldr (filterFB c p) n xs)
 
 {- NOINLINE filterFB #-}
 filterFB c p x r | p x       = x `c` r
-		 | otherwise = r
+                 | otherwise = r
 
 {- NOINLINE iterateFB #-}
 iterate f x = build (\c _n -> iterateFB c f x)
@@ -275,7 +275,7 @@ bangFB _x xs m = xs $! (m - 1)
 {-# INLINE (!!) #-}
 
 {-# RULES
-"take"	   [~1] forall n xs . take n xs = case n of I# n# -> build (\c nil -> foldr (takeFB c nil) (takeConst nil) xs n#)
+"take"     [~1] forall n xs . take n xs = case n of I# n# -> build (\c nil -> foldr (takeFB c nil) (takeConst nil) xs n#)
 "takeList"  [1] forall n xs . foldr (takeFB (:) []) (takeConst []) xs n = takeUInt n xs
  #-}
 
@@ -288,7 +288,7 @@ takeConst x _ = x
 {-# NOINLINE [0] takeFB #-}
 takeFB :: (a -> b -> c) -> c -> a -> (Int# -> b) -> Int# -> c
 takeFB c n x xs m | m <=# 0#  = n
-		  | otherwise = x `c` xs (m -# 1#)
+                  | otherwise = x `c` xs (m -# 1#)
   -}
 
 -- takeWhile, applied to a predicate p and a list xs, returns the longest
@@ -337,7 +337,7 @@ replicate n x    = f n where
 
 splitAt                  :: Int -> [a] -> ([a],[a])
 --splitAt n xs             =  (take n xs, drop n xs)
-splitAt n ls | n < zero	= ([], ls)
+splitAt n ls | n < zero = ([], ls)
 splitAt n ls = splitAt' n ls where
     splitAt' :: Int -> [a] -> ([a], [a])
     splitAt' z  xs | z == zero = ([], xs)

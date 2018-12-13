@@ -1,9 +1,9 @@
 {-# OPTIONS_JHC -funboxed-values -fno-prelude -funboxed-tuples -fffi #-}
 module Data.IORef(
-    IORef(),	      -- abstract, instance of: Eq
-    newIORef,	      -- :: a -> IO (IORef a)
-    readIORef,	      -- :: IORef a -> IO a
-    writeIORef,	      -- :: IORef a -> a -> IO ()
+    IORef(),          -- abstract, instance of: Eq
+    newIORef,         -- :: a -> IO (IORef a)
+    readIORef,        -- :: IORef a -> IO a
+    writeIORef,       -- :: IORef a -> a -> IO ()
     modifyIORef,      -- :: IORef a -> (a -> a) -> IO ()
     atomicModifyIORef,-- :: IORef a -> (a -> (a,b)) -> IO b
     ) where

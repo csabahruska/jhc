@@ -3,13 +3,13 @@
 # than pollute the table with them.
 
 - name: tuple
-  parameterized: int 
+  parameterized: int
   namespaces: [tc,dc]
   module: Jhc.Prim.Prim
   hsname: "(%s)"
 
 - name: tuple_
-  parameterized: int 
+  parameterized: int
   namespaces: [tc,dc]
   module: Jhc.Prim.Prim
   hsname: "(#%i#)"
@@ -17,7 +17,7 @@
 
 - type: star
   namespaces: s
-  
+
 
 
 

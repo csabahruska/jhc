@@ -25,11 +25,11 @@ toDyn v = Dynamic (typeOf v) (unsafeCoerce v)
 -- | Converts a 'Dynamic' object back into an ordinary Haskell value of
 -- the correct type.  See also 'fromDynamic'.
 fromDyn :: Typeable a
- 	=> Dynamic 	-- ^ the dynamically-typed object
-	-> a		-- ^ a default value
-	-> a		-- ^ returns: the value of the first argument, if
-			-- it has the correct type, otherwise the value of
-			-- the second argument.
+        => Dynamic      -- ^ the dynamically-typed object
+        -> a            -- ^ a default value
+        -> a            -- ^ returns: the value of the first argument, if
+                        -- it has the correct type, otherwise the value of
+                        -- the second argument.
 fromDyn (Dynamic t v) def
   | typeOf def == t = unsafeCoerce v
   | otherwise       = def
@@ -37,11 +37,11 @@ fromDyn (Dynamic t v) def
 -- | Converts a 'Dynamic' object back into an ordinary Haskell value of
 -- the correct type.  See also 'fromDyn'.
 fromDynamic
-	:: Typeable a
-	=> Dynamic	-- ^ the dynamically-typed object
-	-> Maybe a	-- ^ returns: @'Just' a@, if the dynamically-typed
-			-- object has the correct type (and @a@ is its value),
-			-- or 'Nothing' otherwise.
+        :: Typeable a
+        => Dynamic      -- ^ the dynamically-typed object
+        -> Maybe a      -- ^ returns: @'Just' a@, if the dynamically-typed
+                        -- object has the correct type (and @a@ is its value),
+                        -- or 'Nothing' otherwise.
 fromDynamic (Dynamic t v) =
   case unsafeCoerce v of
     r | t == typeOf r -> Just r

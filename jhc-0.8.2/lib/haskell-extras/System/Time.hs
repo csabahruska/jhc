@@ -31,7 +31,7 @@ newtype ClockTime = TOD Integer
 
 instance Show ClockTime where
     showsPrec _ t = showString (calendarTimeToString
-	  			 (unsafePerformIO (toCalendarTime t)))
+                                 (unsafePerformIO (toCalendarTime t)))
 
 data Month =  January   | February | March    | April
            |  May       | June     | July     | August
@@ -117,28 +117,28 @@ calendarTimeToString    =  formatCalendarTime defaultTimeLocale "%c"
 
 addToClockTime  :: TimeDiff  -> ClockTime -> ClockTime
 addToClockTime (TimeDiff year mon day hour min sec psec)
-	       (TOD c_sec) =
-	let
-	  sec_diff = toInteger sec +
+               (TOD c_sec) =
+        let
+          sec_diff = toInteger sec +
                      60 * toInteger min +
                      3600 * toInteger hour +
                      24 * 3600 * toInteger day
-	  --cal      = toUTCTime (TOD (c_sec + sec_diff) (c_psec + psec))
-	  cal      = toUTCTime (TOD (c_sec + sec_diff))
+          --cal      = toUTCTime (TOD (c_sec + sec_diff) (c_psec + psec))
+          cal      = toUTCTime (TOD (c_sec + sec_diff))
                                                        -- FIXME! ^^^^
           new_mon  = fromEnum (ctMonth cal) + r_mon
-	  month' = fst tmp
-	  yr_diff = snd tmp
+          month' = fst tmp
+          yr_diff = snd tmp
           tmp
-	    | new_mon < 0  = (toEnum (12 + new_mon), (-1))
-	    | new_mon > 11 = (toEnum (new_mon `mod` 12), 1)
-	    | otherwise    = (toEnum new_mon, 0)
+            | new_mon < 0  = (toEnum (12 + new_mon), (-1))
+            | new_mon > 11 = (toEnum (new_mon `mod` 12), 1)
+            | otherwise    = (toEnum new_mon, 0)
 
-	  (r_yr, r_mon) = mon `quotRem` 12
+          (r_yr, r_mon) = mon `quotRem` 12
 
           year' = ctYear cal + year + r_yr + yr_diff
-	in
-	toClockTime cal{ctMonth=month', ctYear=year'}
+        in
+        toClockTime cal{ctMonth=month', ctYear=year'}
 
 -- | @'diffClockTimes' t1 t2@ returns the difference between two clock
 -- times @t1@ and @t2@ as a 'TimeDiff'.

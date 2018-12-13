@@ -91,22 +91,22 @@ nested_comment _ _ = do
   input <- alexGetInput
   go 1 input
   where go 0 input = do alexSetInput input; alexMonadScan
-	go n input = do
-	  case alexGetChar input of
-	    Nothing  -> err input
-	    Just (c,input) -> do
-	      case c of
-	    	'-' -> do
-		  case alexGetChar input of
-		    Nothing  -> err input
-		    Just ('}',input) -> go (n-1) input
-		    Just (_c,_input)      -> go n input
-	     	'{' -> do
-		  case alexGetChar input of
-		    Nothing  -> err input
-		    Just ('-',input) -> go (n+1) input
-		    Just (c,input)   -> go n input
-	    	c -> go n input
+        go n input = do
+          case alexGetChar input of
+            Nothing  -> err input
+            Just (c,input) -> do
+              case c of
+                '-' -> do
+                  case alexGetChar input of
+                    Nothing  -> err input
+                    Just ('}',input) -> go (n-1) input
+                    Just (_c,_input)      -> go n input
+                '{' -> do
+                  case alexGetChar input of
+                    Nothing  -> err input
+                    Just ('-',input) -> go (n+1) input
+                    Just (c,input)   -> go n input
+                c -> go n input
         err input = do alexSetInput input; lexError "error in nested comment"
 
 {-
@@ -124,9 +124,9 @@ lexError :: String -> Alex a
 lexError s = do
   (p,c,bs,input) <- alexGetInput
   alexError (showPosn p ++ ": " ++ s ++
-		   (if (not (null input))
-		     then " before " ++ show (head input)
-		     else " at end of file"))
+                   (if (not (null input))
+                     then " before " ++ show (head input)
+                     else " at end of file"))
 
 scanner :: Opt -> String -> Either String [Lexeme]
 scanner opt str = runAlex str $ do
@@ -311,41 +311,41 @@ token t input len = return (t input len)
 discard_pragma,hs :: Int
 discard_pragma = 1
 hs = 2
-alex_action_0 =  begin hs 
-alex_action_1 =  begin hs 
-alex_action_5 =  mkJL LPragmaStart "#LINE" 
-alex_action_6 =  begin discard_pragma 
-alex_action_7 =  begin discard_pragma 
-alex_action_8 =  begin discard_pragma 
-alex_action_9 =  begin discard_pragma 
-alex_action_10 =  begin hs 
-alex_action_13 =  mkL LSpecial 
-alex_action_14 =  mkL LSpecial 
-alex_action_15 =  nested_comment 
-alex_action_16 =  mkL LSpecial 
-alex_action_17 =  mkL LReservedId 
-alex_action_18 =  mkL LReservedId 
-alex_action_19 =  mkL LVarId 
-alex_action_20 =  mkL LReservedOp 
-alex_action_21 =  mkL LVarId 
-alex_action_22 =  mkL LConId 
-alex_action_23 =  mkL LVarSym 
-alex_action_24 =  mkL LConSym 
-alex_action_25 =  mkL LQReservedId 
-alex_action_26 =  mkL LQVarId 
-alex_action_27 =  mkL LQConId 
-alex_action_28 =  mkL LQVarSym 
-alex_action_29 =  mkL LQConSym 
-alex_action_30 =  mkL LInteger 
-alex_action_31 =  mkL LFloat 
-alex_action_32 =  mkL LChar 
-alex_action_33 =  mkL LString 
-alex_action_34 =  mkL LSpecial 
-alex_action_35 =  mkL LSpecial 
-alex_action_36 =  mkL LInteger_ 
-alex_action_37 =  mkL LString_ 
-alex_action_38 =  mkL LChar_ 
-alex_action_39 =  mkL LFloat_ 
+alex_action_0 =  begin hs
+alex_action_1 =  begin hs
+alex_action_5 =  mkJL LPragmaStart "#LINE"
+alex_action_6 =  begin discard_pragma
+alex_action_7 =  begin discard_pragma
+alex_action_8 =  begin discard_pragma
+alex_action_9 =  begin discard_pragma
+alex_action_10 =  begin hs
+alex_action_13 =  mkL LSpecial
+alex_action_14 =  mkL LSpecial
+alex_action_15 =  nested_comment
+alex_action_16 =  mkL LSpecial
+alex_action_17 =  mkL LReservedId
+alex_action_18 =  mkL LReservedId
+alex_action_19 =  mkL LVarId
+alex_action_20 =  mkL LReservedOp
+alex_action_21 =  mkL LVarId
+alex_action_22 =  mkL LConId
+alex_action_23 =  mkL LVarSym
+alex_action_24 =  mkL LConSym
+alex_action_25 =  mkL LQReservedId
+alex_action_26 =  mkL LQVarId
+alex_action_27 =  mkL LQConId
+alex_action_28 =  mkL LQVarSym
+alex_action_29 =  mkL LQConSym
+alex_action_30 =  mkL LInteger
+alex_action_31 =  mkL LFloat
+alex_action_32 =  mkL LChar
+alex_action_33 =  mkL LString
+alex_action_34 =  mkL LSpecial
+alex_action_35 =  mkL LSpecial
+alex_action_36 =  mkL LInteger_
+alex_action_37 =  mkL LString_
+alex_action_38 =  mkL LChar_
+alex_action_39 =  mkL LFloat_
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "<built-in>" #-}
@@ -423,13 +423,13 @@ alexIndexInt16OffAddr (AlexA# arr) off =
 
 
 {-# INLINE alexIndexInt32OffAddr #-}
-alexIndexInt32OffAddr (AlexA# arr) off = 
+alexIndexInt32OffAddr (AlexA# arr) off =
 #ifdef WORDS_BIGENDIAN
   narrow32Int# i
   where
    i    = word2Int# ((b3 `uncheckedShiftL#` 24#) `or#`
-		     (b2 `uncheckedShiftL#` 16#) `or#`
-		     (b1 `uncheckedShiftL#` 8#) `or#` b0)
+                     (b2 `uncheckedShiftL#` 16#) `or#`
+                     (b1 `uncheckedShiftL#` 8#) `or#` b0)
    b3   = int2Word# (ord# (indexCharOffAddr# arr (off' +# 3#)))
    b2   = int2Word# (ord# (indexCharOffAddr# arr (off' +# 2#)))
    b1   = int2Word# (ord# (indexCharOffAddr# arr (off' +# 1#)))
@@ -469,30 +469,30 @@ alexScan input (I# (sc))
 
 alexScanUser user input (I# (sc))
   = case alex_scan_tkn user input 0# input sc AlexNone of
-	(AlexNone, input') ->
-		case alexGetByte input of
-			Nothing -> 
+        (AlexNone, input') ->
+                case alexGetByte input of
+                        Nothing ->
 
 
 
-				   AlexEOF
-			Just _ ->
+                                   AlexEOF
+                        Just _ ->
 
 
 
-				   AlexError input'
+                                   AlexError input'
 
-	(AlexLastSkip input'' len, _) ->
-
-
-
-		AlexSkip input'' len
-
-	(AlexLastAcc k input''' len, _) ->
+        (AlexLastSkip input'' len, _) ->
 
 
 
-		AlexToken input''' len k
+                AlexSkip input'' len
+
+        (AlexLastAcc k input''' len, _) ->
+
+
+
+                AlexToken input''' len k
 
 
 -- Push the input through the DFA, remembering the most recent accepting
@@ -500,13 +500,13 @@ alexScanUser user input (I# (sc))
 
 alex_scan_tkn user orig_input len input s last_acc =
   input `seq` -- strict in the input
-  let 
-	new_acc = (check_accs (alex_accept `quickIndex` (I# (s))))
+  let
+        new_acc = (check_accs (alex_accept `quickIndex` (I# (s))))
   in
   new_acc `seq`
   case alexGetByte input of
      Nothing -> (new_acc, input)
-     Just (c, new_input) -> 
+     Just (c, new_input) ->
 
 
 
@@ -515,34 +515,34 @@ alex_scan_tkn user orig_input len input s last_acc =
                 base   = alexIndexInt32OffAddr alex_base s
                 offset = (base +# ord_c)
                 check  = alexIndexInt16OffAddr alex_check offset
-		
+
                 new_s = if GTE(offset,0#) && EQ(check,ord_c)
-			  then alexIndexInt16OffAddr alex_table offset
-			  else alexIndexInt16OffAddr alex_deflt s
-	in
+                          then alexIndexInt16OffAddr alex_table offset
+                          else alexIndexInt16OffAddr alex_deflt s
+        in
         case new_s of
-	    -1# -> (new_acc, input)
-		-- on an error, we want to keep the input *before* the
-		-- character that failed, not after.
-    	    _ -> alex_scan_tkn user orig_input (if c < 0x80 || c >= 0xC0 then (len +# 1#) else len)
+            -1# -> (new_acc, input)
+                -- on an error, we want to keep the input *before* the
+                -- character that failed, not after.
+            _ -> alex_scan_tkn user orig_input (if c < 0x80 || c >= 0xC0 then (len +# 1#) else len)
                                                 -- note that the length is increased ONLY if this is the 1st byte in a char encoding)
-			new_input new_s new_acc
+                        new_input new_s new_acc
       }
   where
-	check_accs (AlexAccNone) = last_acc
-	check_accs (AlexAcc a  ) = AlexLastAcc a input (I# (len))
-	check_accs (AlexAccSkip) = AlexLastSkip  input (I# (len))
+        check_accs (AlexAccNone) = last_acc
+        check_accs (AlexAcc a  ) = AlexLastAcc a input (I# (len))
+        check_accs (AlexAccSkip) = AlexLastSkip  input (I# (len))
 
-	check_accs (AlexAccPred a predx rest)
-	   | predx user orig_input (I# (len)) input
-	   = AlexLastAcc a input (I# (len))
-	   | otherwise
-	   = check_accs rest
-	check_accs (AlexAccSkipPred predx rest)
-	   | predx user orig_input (I# (len)) input
-	   = AlexLastSkip input (I# (len))
-	   | otherwise
-	   = check_accs rest
+        check_accs (AlexAccPred a predx rest)
+           | predx user orig_input (I# (len)) input
+           = AlexLastAcc a input (I# (len))
+           | otherwise
+           = check_accs rest
+        check_accs (AlexAccSkipPred predx rest)
+           | predx user orig_input (I# (len)) input
+           = AlexLastSkip input (I# (len))
+           | otherwise
+           = check_accs rest
 
 
 data AlexLastAcc a
@@ -571,22 +571,22 @@ type AlexAccPred user = user -> AlexInput -> Int -> AlexInput -> Bool
 alexAndPred p1 p2 user in1 len in2
   = p1 user in1 len in2 && p2 user in1 len in2
 
---alexPrevCharIsPred :: Char -> AlexAccPred _ 
+--alexPrevCharIsPred :: Char -> AlexAccPred _
 alexPrevCharIs c _ input _ _ = c == alexInputPrevChar input
 
 alexPrevCharMatches f _ input _ _ = f (alexInputPrevChar input)
 
---alexPrevCharIsOneOfPred :: Array Char Bool -> AlexAccPred _ 
+--alexPrevCharIsOneOfPred :: Array Char Bool -> AlexAccPred _
 alexPrevCharIsOneOf arr _ input _ _ = arr ! alexInputPrevChar input
 
 --alexRightContext :: Int -> AlexAccPred _
-alexRightContext (I# (sc)) user _ _ input = 
+alexRightContext (I# (sc)) user _ _ input =
      case alex_scan_tkn user input 0# input sc AlexNone of
-	  (AlexNone, _) -> False
-	  _ -> True
-	-- TODO: there's no need to find the longest
-	-- match when checking the right context, just
-	-- the first match will do.
+          (AlexNone, _) -> False
+          _ -> True
+        -- TODO: there's no need to find the longest
+        -- match when checking the right context, just
+        -- the first match will do.
 
 
 -- used by wrappers

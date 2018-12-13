@@ -10,7 +10,7 @@ module Foreign.Marshal.Alloc (
   mallocBytes,  -- ::               Int -> IO (Ptr a)
 
   realloc,      -- :: Storable b => Ptr a        -> IO (Ptr b)
-  reallocBytes, -- ::		    Ptr a -> Int -> IO (Ptr a)
+  reallocBytes, -- ::               Ptr a -> Int -> IO (Ptr a)
 
   free,         -- :: Ptr a -> IO ()
   finalizerFree -- :: FinalizerPtr a

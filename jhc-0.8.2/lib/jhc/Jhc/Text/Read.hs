@@ -123,28 +123,28 @@ nonnull p s      =  [(cs,t) | (cs@(_:_),t) <- [span p s]]
 
 instance (Read a,Read b) => Read (Either a b) where
     readsPrec d input =
-	      readParen (d > 9)
-	      (\ inp ->
-	       [((Left aa) , rest) | ("Left" , inp) <- lex inp ,
-		(aa , rest) <- readsPrec 10 inp])
-	      input
-	      ++
-	      readParen (d > 9)
-	      (\ inp ->
-	       [((Right aa) , rest) | ("Right" , inp) <- lex inp ,
-		(aa , rest) <- readsPrec 10 inp])
-	      input
+              readParen (d > 9)
+              (\ inp ->
+               [((Left aa) , rest) | ("Left" , inp) <- lex inp ,
+                (aa , rest) <- readsPrec 10 inp])
+              input
+              ++
+              readParen (d > 9)
+              (\ inp ->
+               [((Right aa) , rest) | ("Right" , inp) <- lex inp ,
+                (aa , rest) <- readsPrec 10 inp])
+              input
 
 instance (Read a) => Read (Maybe a) where
     readsPrec d input =
-	      (\ inp -> [((Nothing) , rest) | ("Nothing" , rest) <- lex inp])
-	      input
-	      ++
-	      readParen (d > 9)
-	      (\ inp ->
-	       [((Just aa) , rest) | ("Just" , inp) <- lex inp ,
-		(aa , rest) <- readsPrec 10 inp])
-	      input
+              (\ inp -> [((Nothing) , rest) | ("Nothing" , rest) <- lex inp])
+              input
+              ++
+              readParen (d > 9)
+              (\ inp ->
+               [((Just aa) , rest) | ("Just" , inp) <- lex inp ,
+                (aa , rest) <- readsPrec 10 inp])
+              input
 
 -- readInt reads a string of digits using an arbitrary base.
 -- Leading minus signs must be handled elsewhere.

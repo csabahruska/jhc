@@ -17,9 +17,9 @@ module Foreign.Marshal.Error (
   throwIf,       -- :: (a -> Bool) -> (a -> String) -> IO a       -> IO a
   throwIf_,      -- :: (a -> Bool) -> (a -> String) -> IO a       -> IO ()
   throwIfNeg,    -- :: (Ord a, Num a)
-	         -- =>                (a -> String) -> IO a       -> IO a
+                 -- =>                (a -> String) -> IO a       -> IO a
   throwIfNeg_,   -- :: (Ord a, Num a)
-	         -- =>                (a -> String) -> IO a       -> IO ()
+                 -- =>                (a -> String) -> IO a       -> IO ()
   throwIfNull,   -- ::                String        -> IO (Ptr a) -> IO (Ptr a)
 
   -- Discard return value
@@ -35,11 +35,11 @@ import Foreign.Ptr
 -- 'True' when applied to the result returned by the 'IO' action.
 -- If no exception is raised, return the result of the computation.
 --
-throwIf :: (a -> Bool)	-- ^ error condition on the result of the 'IO' action
-	-> (a -> String) -- ^ computes an error message from erroneous results
-			-- of the 'IO' action
-	-> IO a		-- ^ the 'IO' action to be executed
-	-> IO a
+throwIf :: (a -> Bool)  -- ^ error condition on the result of the 'IO' action
+        -> (a -> String) -- ^ computes an error message from erroneous results
+                        -- of the 'IO' action
+        -> IO a         -- ^ the 'IO' action to be executed
+        -> IO a
 throwIf pred msgfct act  = do
     res <- act
     (if pred res then ioError . userError . msgfct else return) res

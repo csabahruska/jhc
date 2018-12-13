@@ -12,7 +12,7 @@ data Env b  = Env {-# UNPACK #-} !(IOArray Int b) {-# UNPACK #-} !(IOArray Int (
 newtype Ms b c = Ms' (Env b -> IO c)
 
 instance Applicative (Ms b) where
-    pure = return 
+    pure = return
     (<*>) = ap
 
 instance Monad (Ms b) where

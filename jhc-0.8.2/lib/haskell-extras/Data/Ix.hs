@@ -20,14 +20,14 @@ class  Ord a => Ix a  where
     rangeSize b@(l,h) = case range b of
         [] -> zero
         _  -> index b h `plus` one
-	-- NB: replacing "null (range b)" by  "not (l <= h)"
-	-- fails if the bounds are tuples.  For example,
-	-- 	(1,2) <= (2,1)
-	-- but the range is nevertheless empty
-	--	range ((1,2),(2,1)) = []
+        -- NB: replacing "null (range b)" by  "not (l <= h)"
+        -- fails if the bounds are tuples.  For example,
+        --      (1,2) <= (2,1)
+        -- but the range is nevertheless empty
+        --      range ((1,2),(2,1)) = []
 
 instance  Ix Char  where
-    range (m,n)		= [m..n]
+    range (m,n)         = [m..n]
     index b@(c,c') ci
         | inRange b ci  =  fromEnum ci `minus` fromEnum c
         | otherwise     =  error "Ix.index: Index out of range."
@@ -50,7 +50,7 @@ IXINST(Int16)
 IXINST(Int32)
 
 instance  Ix Int  where
-    range (m,n)		= [m..n]
+    range (m,n)         = [m..n]
     index b@(m,n) i
         | inRange b i   =  i `minus` m
         | otherwise     =  error "Ix.index: Index out of range."
@@ -62,21 +62,21 @@ instance  (Ix a, Ix b)  => Ix (a,b) where
         inRange ((l,l'),(u,u')) (i,i') = inRange (l,u) i && inRange (l',u') i'
 
 --instance  Ix Integer  where
---    range (m,n)		= [m..n]
+--    range (m,n)               = [m..n]
 --    index b@(m,n) i
 --        | inRange b i   =  fromInteger (i - m)
 --        | otherwise     =  error "Ix.index: Index out of range."
 --    inRange (m,n) i     =  m <= i && i <= n
 
 instance  Ix Bool  where
-    range (m,n)		= [m..n]
+    range (m,n)         = [m..n]
     index b@(c,c') ci
         | inRange b ci  =  fromEnum ci `minus` fromEnum c
         | otherwise     =  error "Ix.index: 'Bool' Index out of range."
     inRange (c,c') i    =  c <= i && i <= c'
 
 instance  Ix Ordering  where
-    range (m,n)		= [m..n]
+    range (m,n)         = [m..n]
     index b@(c,c') ci
         | inRange b ci  =  fromEnum ci `minus` fromEnum c
         | otherwise     =  error "Ix.index: 'Ordering' Index out of range."

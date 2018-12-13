@@ -75,9 +75,9 @@ hIsOpen h = do
     ptr <- peek (handleFile h)
     return (ptr /= nullPtr)
 
-throwErrnoFN     :: String	-- ^ textual description of the error location
+throwErrnoFN     :: String      -- ^ textual description of the error location
                -> String
-	       -> IO a
+               -> IO a
 throwErrnoFN loc fn  = do
     errno <- getErrno
     ioError (errnoToIOError loc errno Nothing (Just fn))

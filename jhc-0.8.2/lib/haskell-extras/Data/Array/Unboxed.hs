@@ -41,9 +41,9 @@ assocs a              =  [(i, a!i) | i <- indices a]
 a // []               = a
 a // new_ivs          = array (bounds a) (old_ivs ++ new_ivs)
                       where
-                  	old_ivs = [(i,a!i) | i <- indices a,
+                        old_ivs = [(i,a!i) | i <- indices a,
                                              i `notElem` new_is]
-                  	new_is  = [i | (i,_) <- new_ivs]
+                        new_is  = [i | (i,_) <- new_ivs]
 
 accum                 :: (Ix a,Storable b ) => (b -> c -> b) -> UArray a b -> [(a,c)] -> UArray a b
 accum f               =  foldl (\a (i,v) -> a // [(i,f (a!i) v)])

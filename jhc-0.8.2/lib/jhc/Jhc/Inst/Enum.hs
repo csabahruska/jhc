@@ -70,7 +70,7 @@ instance Enum () where
              | True    = error "Prelude.Enum.().toEnum: bad argument"
 
     fromEnum () = 0
-    enumFrom () 	= [()]
-    enumFromThen () () 	= let many = ():many in many
-    enumFromTo () () 	= [()]
+    enumFrom ()         = [()]
+    enumFromThen () ()  = let many = ():many in many
+    enumFromTo () ()    = [()]
     enumFromThenTo () () () = let many = ():many in many

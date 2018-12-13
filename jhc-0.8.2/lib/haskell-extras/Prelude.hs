@@ -159,9 +159,9 @@ unlines (l:ls) = l ++ '\n' : unlines ls
 --unlines          =  concatMap (++ "\n")
 
 unwords          :: [String] -> String
-unwords []		=  ""
-unwords [w]		= w
-unwords (w:ws)		= w ++ ' ' : unwords ws
+unwords []              =  ""
+unwords [w]             = w
+unwords (w:ws)          = w ++ ' ' : unwords ws
 
 -- lookup key assocs looks up a key in an association list.
 
@@ -182,14 +182,14 @@ lookup key ((x,y):xys)
 sum, product     :: (Num a) => [a] -> a
 --sum              =  foldl (+) 0
 --product          =  foldl (*) 1
-sum l	= sum' l 0 where
+sum l   = sum' l 0 where
     sum' []     a = a
     sum' (x:xs) a = sum' xs (a+x)
-product	l = prod l 1 where
+product l = prod l 1 where
     prod []     a = a
     prod (x:xs) a = prod xs (a*x)
 
-sum' l	= rsum l 0 where
+sum' l  = rsum l 0 where
     rsum []     a = a
     rsum (x:xs) a = a `seq` rsum xs (a+x)
 

@@ -39,7 +39,7 @@ groop n xs     = take n xs : groop n (drop n xs)
 
 lframe        :: (Int,Int) -> Picture -> Picture
 lframe (m,n) p = (p `beside` empty (h,n-w)) `above` empty (m-h,n)
-		 where h = height p
+                 where h = height p
                        w = width p
 
 -- Information about the months in a year:
@@ -52,8 +52,8 @@ leap year         = if year`mod`100 == 0 then year`mod`400 == 0
                                          else year`mod`4   == 0
 
 monthNames        = ["January","February","March","April",
-		     "May","June","July","August",
-		     "September","October","November","December"]
+                     "May","June","July","August",
+                     "September","October","November","December"]
 
 jan1st year       = (year + last`div`4 - last`div`100 + last`div`400) `mod` 7
                     where last = year - 1

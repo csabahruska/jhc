@@ -14,18 +14,18 @@ malcolm 2/00 - patched for nhc98
 -}
 
 module System.Random
-	(
-	  RandomGen(next, split, genRange)
-	, StdGen
-	, mkStdGen
-	, Random ( random,   randomR,
-		   randoms,  randomRs,
-		   randomIO, randomRIO )
-	, getStdRandom
-	, getStdGen
-	, setStdGen
-	, newStdGen
-	) where
+        (
+          RandomGen(next, split, genRange)
+        , StdGen
+        , mkStdGen
+        , Random ( random,   randomR,
+                   randoms,  randomRs,
+                   randomIO, randomRIO )
+        , getStdRandom
+        , getStdGen
+        , setStdGen
+        , newStdGen
+        ) where
 
 import Data.Char ( isSpace, chr, ord )
 import Foreign.Ptr
@@ -62,8 +62,8 @@ instance Read StdGen where
     where
       try_read r = do
          (s1, r1) <- readDec (dropWhile isSpace r)
-	 (s2, r2) <- readDec (dropWhile isSpace r1)
-	 return (StdGen s1 s2, r2)
+         (s2, r2) <- readDec (dropWhile isSpace r1)
+         return (StdGen s1 s2, r2)
 
 {-
  If we cannot unravel the StdGen from a string, create
@@ -71,7 +71,7 @@ instance Read StdGen where
 -}
 stdFromString         :: String -> (StdGen, String)
 stdFromString s        = (mkStdGen num, rest)
-	where (cs, rest) = splitAt 6 s
+        where (cs, rest) = splitAt 6 s
               num        = foldl (\a x -> x + 3 * a) 1 (map ord cs)
 
 mkStdGen :: Int -> StdGen -- why not Integer ?
@@ -79,16 +79,16 @@ mkStdGen s
  | s < 0     = mkStdGen (-s)
  | otherwise = StdGen (s1+1) (s2+1)
       where
-	(q, s1) = s `divMod` 2147483562
-	s2      = q `mod` 2147483398
+        (q, s1) = s `divMod` 2147483562
+        s2      = q `mod` 2147483398
 
 createStdGen :: Integer -> StdGen
 createStdGen s
  | s < 0     = createStdGen (-s)
  | otherwise = StdGen (toInt (s1+1)) (toInt (s2+1))
       where
-	(q, s1) = s `divMod` 2147483562
-	s2      = q `mod` 2147483398
+        (q, s1) = s `divMod` 2147483562
+        s2      = q `mod` 2147483398
 
 class Random a where
   -- Minimal complete definition: random and randomR
@@ -101,7 +101,7 @@ class Random a where
 
   randomRs ival g = x : randomRs ival g' where
     (x,g') = randomR ival g
-  randomIO	   = getStdRandom random
+  randomIO         = getStdRandom random
   randoms  g      = (\(x,g') -> x : randoms g') (random g)
   randomRIO range  = getStdRandom (randomR range)
 
@@ -113,7 +113,7 @@ instance Random Char where
   randomR (a,b) g =
       case (randomIvalInteger (toInteger (ord a), toInteger (ord b)) g) of
         (x,g) -> (chr x, g)
-  random g	  = randomR (minBound,maxBound) g
+  random g        = randomR (minBound,maxBound) g
 
 instance Random Bool where
   randomR (a,b) g =
@@ -123,14 +123,14 @@ instance Random Bool where
          bool2Int False = (0::Int)
          bool2Int True  = 1
 
-	 int2Bool 0	= False
-	 int2Bool _	= True
+         int2Bool 0     = False
+         int2Bool _     = True
 
-  random g	  = randomR (minBound,maxBound) g
+  random g        = randomR (minBound,maxBound) g
 
 instance Random Integer where
   randomR ival g = randomIvalInteger ival g
-  random g	 = randomR (toInteger (minBound::Int), toInteger (maxBound::Int)) g
+  random g       = randomR (toInteger (minBound::Int), toInteger (maxBound::Int)) g
 
 instance Random Double where
   randomR ival g = randomIvalDouble ival id g
@@ -163,9 +163,9 @@ randomIvalInteger (l,h) rng
        f 0 acc g = (acc, g)
        f n acc g =
           let
-	   (x,g')   = next g
-	  in
-	  f (n-1) (fromInt x + acc * b) g'
+           (x,g')   = next g
+          in
+          f (n-1) (fromInt x + acc * b) g'
 
 randomIvalDouble :: (RandomGen g, Fractional a) => (Double, Double) -> (Double -> a) -> g -> (a, g)
 randomIvalDouble (l,h) fromDouble rng
@@ -173,13 +173,13 @@ randomIvalDouble (l,h) fromDouble rng
   | otherwise =
        case (randomIvalInteger (toInteger (minBound::Int), toInteger (maxBound::Int)) rng) of
          (x, rng') ->
-	    let
-	     scaled_x =
-		fromDouble ((l+h)/2) +
+            let
+             scaled_x =
+                fromDouble ((l+h)/2) +
                 fromDouble ((h-l) / realToFrac intRange) *
-		fromIntegral (x::Int)
-	    in
-	    (scaled_x, rng')
+                fromIntegral (x::Int)
+            in
+            (scaled_x, rng')
 
 intRange :: Integer
 intRange  = toInteger (maxBound::Int) - toInteger (minBound::Int)
@@ -189,16 +189,16 @@ iLogBase b i = if i < b then 1 else 1 + iLogBase b (i `div` b)
 
 stdNext :: StdGen -> (Int, StdGen)
 stdNext (StdGen s1 s2) = (z', StdGen s1'' s2'')
-	where	z'   = if z < 1 then z + 2147483562 else z
-		z    = s1'' - s2''
+        where   z'   = if z < 1 then z + 2147483562 else z
+                z    = s1'' - s2''
 
-		k    = s1 `quot` 53668
-		s1'  = 40014 * (s1 - k * 53668) - k * 12211
-		s1'' = if s1' < 0 then s1' + 2147483563 else s1'
+                k    = s1 `quot` 53668
+                s1'  = 40014 * (s1 - k * 53668) - k * 12211
+                s1'' = if s1' < 0 then s1' + 2147483563 else s1'
 
-		k'   = s2 `quot` 52774
-		s2'  = 40692 * (s2 - k' * 52774) - k' * 3791
-		s2'' = if s2' < 0 then s2' + 2147483399 else s2'
+                k'   = s2 `quot` 52774
+                s2'  = 40692 * (s2 - k' * 52774) - k' * 3791
+                s2'' = if s2' < 0 then s2' + 2147483399 else s2'
 
 stdSplit            :: StdGen -> (StdGen, StdGen)
 stdSplit std@(StdGen s1 s2)
@@ -253,7 +253,7 @@ newStdGen = do
 
 getStdRandom :: (StdGen -> (a,StdGen)) -> IO a
 getStdRandom f = do
-   rng		<- getStdGen
+   rng          <- getStdGen
    let (v, new_rng) = f rng
    setStdGen new_rng
    return v

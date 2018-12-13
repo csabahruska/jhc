@@ -27,7 +27,7 @@ exposed-modules:
   - Data.Binary.Builder.Internal
 extra-source-files: |-
   README.md index.html docs/hcar/binary-Lb.tex
-  tools/derive/*.hs tests/Makefile benchmarks/Makefile 
+  tools/derive/*.hs tests/Makefile benchmarks/Makefile
   benchmarks/CBenchmark.h
 ghc-options: -O2 -Wall -fliberate-case-threshold=1000
 homepage: https://github.com/kolmodin/binary

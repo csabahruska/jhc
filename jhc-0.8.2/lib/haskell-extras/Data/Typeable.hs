@@ -95,7 +95,7 @@ mkAppTy (TypeRep x xs) tr = TypeRep x (xs ++ [tr])
 
 -------------------------------------------------------------
 --
---		Type-safe cast
+--              Type-safe cast
 --
 -------------------------------------------------------------
 
@@ -108,7 +108,7 @@ cast x = r where
     fromJust (Just x) = x
     r = if typeOf x == typeOf (fromJust r)
                then Just $ unsafeCoerce x
-	       else Nothing
+               else Nothing
 
 {-
 -- | A flexible variation parameterised in a type constructor
